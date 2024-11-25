@@ -3,90 +3,137 @@ import folium
 
 app = Flask(__name__)
 
-# Animal data with locations, details, help, and fun facts
+# Animal data
 animal_data = {
     "elephant": {
         "location": [1.3521, 103.8198],
-        "details": "Elephants are endangered due to poaching for ivory.",
-        "help": "Support anti-poaching laws and promote ethical tourism.",
-        "fun_fact": "Elephants can hear through their feet by detecting ground vibrations!"
+        "details": "Elephants face habitat loss, poaching for ivory, and human-wildlife conflict.",
+        "help": [
+            "Support anti-poaching laws.",
+            "Donate to wildlife conservation organizations.",
+            "Spread awareness about the ivory trade."
+        ],
+        "fun_fact": "Elephants can communicate using infrasound, which travels long distances."
     },
     "tiger": {
         "location": [20.5937, 78.9629],
-        "details": "Tigers are endangered due to habitat loss and poaching.",
-        "help": "Support wildlife protection laws and contribute to tiger conservation.",
-        "fun_fact": "Tigers' stripe patterns are unique, like human fingerprints."
+        "details": "Tigers are endangered due to habitat destruction, poaching, and human conflict.",
+        "help": [
+            "Support wildlife protection laws.",
+            "Avoid products made from tiger parts.",
+            "Contribute to tiger conservation programs."
+        ],
+        "fun_fact": "A tiger's roar can be heard up to two miles away!"
     },
     "polar_bear": {
-        "location": [66.160507, -153.369141],
-        "details": "Polar bears are endangered due to melting sea ice from climate change.",
-        "help": "Reduce carbon footprints and support climate change initiatives.",
-        "fun_fact": "Polar bears have black skin under their white fur to absorb heat!"
+        "location": [70.0000, -120.0000],
+        "details": "Polar bears are affected by climate change, which reduces their sea ice habitat.",
+        "help": [
+            "Reduce your carbon footprint.",
+            "Support organizations like Polar Bears International.",
+            "Advocate for climate action policies."
+        ],
+        "fun_fact": "Polar bears can swim for days to find food, sometimes covering over 60 miles."
     },
     "orangutan": {
-        "location": [-2.5489, 118.0149],
-        "details": "Orangutans are endangered due to deforestation and illegal pet trade.",
-        "help": "Avoid products with unsustainable palm oil and support wildlife rescues.",
-        "fun_fact": "Orangutans are the heaviest tree-dwelling animals, with arms up to 7 feet long!"
+        "location": [3.2028, 113.4914],
+        "details": "Orangutans are endangered due to deforestation for palm oil plantations and illegal pet trade.",
+        "help": [
+            "Choose products made with sustainable palm oil.",
+            "Support organizations like Orangutan Foundation International.",
+            "Avoid contributing to illegal wildlife trade."
+        ],
+        "fun_fact": "Orangutans share 97% of their DNA with humans and are highly intelligent tool users."
     },
     "sea_turtle": {
-        "location": [15.7835, -90.2308],
-        "details": "Sea turtles are endangered due to pollution, climate change, and poaching.",
-        "help": "Reduce plastic use, support marine clean-ups, and protect nesting sites.",
-        "fun_fact": "Sea turtles have existed for over 100 million years!"
+        "location": [15.5000, -90.3000],
+        "details": "Sea turtles are endangered due to poaching, bycatch, climate change, and marine pollution.",
+        "help": [
+            "Reduce plastic use to prevent ocean pollution.",
+            "Support marine cleanup initiatives.",
+            "Protect nesting sites by volunteering or donating."
+        ],
+        "fun_fact": "Sea turtles can hold their breath for up to 7 hours while sleeping underwater."
     },
     "amur_leopard": {
-        "location": [45.7619, 134.2355],
-        "details": "Amur leopards are endangered due to habitat destruction and poaching.",
-        "help": "Support anti-poaching and habitat restoration programs.",
-        "fun_fact": "Amur leopards are the rarest big cats, with only about 100 left in the wild."
+        "location": [45.0000, 130.0000],
+        "details": "Amur leopards face habitat loss, poaching, and prey scarcity.",
+        "help": [
+            "Support habitat restoration programs.",
+            "Donate to organizations like WWF.",
+            "Spread awareness about the importance of predators in ecosystems."
+        ],
+        "fun_fact": "Amur leopards can jump more than 10 feet vertically, making them excellent hunters."
     },
     "pangolin": {
-        "location": [30.5595, 22.9375],
+        "location": [6.4281, -9.4295],
         "details": "Pangolins are heavily trafficked for their scales and meat.",
-        "help": "Support laws against wildlife trafficking and donate to anti-poaching organizations.",
-        "fun_fact": "Pangolins are the only mammals fully covered in scales!"
+        "help": [
+            "Support anti-trafficking laws and enforcement.",
+            "Spread awareness about illegal wildlife trade.",
+            "Avoid products derived from pangolins."
+        ],
+        "fun_fact": "Pangolins can roll into a tight ball when threatened, using their tough scales for protection."
     },
     "vaquita": {
-        "location": [31.8024, -116.5576],
-        "details": "Vaquitas are endangered due to bycatch in illegal gillnets.",
-        "help": "Support efforts to eliminate illegal fishing practices and marine conservation.",
-        "fun_fact": "The vaquita is the smallest and most endangered marine mammal!"
+        "location": [31.5000, -114.0000],
+        "details": "Vaquitas are critically endangered due to bycatch in illegal fishing nets.",
+        "help": [
+            "Support efforts to remove illegal fishing gear.",
+            "Donate to organizations like Sea Shepherd.",
+            "Advocate for sustainable fishing practices."
+        ],
+        "fun_fact": "Vaquitas are the smallest porpoises and have distinctive dark rings around their eyes."
     },
     "red_panda": {
-        "location": [27.533, 88.5122],
-        "details": "Red pandas are endangered due to deforestation and illegal pet trade.",
-        "help": "Support reforestation and avoid products that contribute to deforestation.",
-        "fun_fact": "Red pandas use their bushy tails as blankets in the cold."
+        "location": [27.0000, 87.0000],
+        "details": "Red pandas face deforestation, habitat fragmentation, and illegal pet trade.",
+        "help": [
+            "Support reforestation projects in the Himalayas.",
+            "Avoid contributing to illegal wildlife trade.",
+            "Donate to organizations like the Red Panda Network."
+        ],
+        "fun_fact": "Red pandas use their bushy tails for balance and as blankets in the cold."
     },
     "blue_whale": {
-        "location": [-54.4296, 3.3166],
-        "details": "Blue whales are endangered due to ship collisions and climate change.",
-        "help": "Support marine conservation, reduce ocean pollution, and protect whale habitats.",
-        "fun_fact": "Blue whales are the largest animals on Earth, weighing up to 200 tons!"
+        "location": [-8.7832, -124.5085],
+        "details": "Blue whales are endangered due to ship strikes, climate change, and ocean pollution.",
+        "help": [
+            "Advocate for stricter marine traffic regulations.",
+            "Support organizations like Ocean Conservancy.",
+            "Reduce ocean pollution by avoiding single-use plastics."
+        ],
+        "fun_fact": "The blue whale’s heart weighs as much as a small car, and their tongue can weigh as much as an elephant!"
     }
 }
 
+
+
 @app.route('/<animal_name>')
 def show_animal(animal_name):
-    animal = animal_data.get(animal_name, None)
+    animal = animal_data.get(animal_name)
 
     if animal:
-        # Create map centered on the animal's location
+        # Create a map centered on the animal's location with dynamic size
         animal_map = folium.Map(location=animal["location"], zoom_start=4)
 
-        # Add marker with information about the animal
+        # Add a marker
         folium.Marker(
             location=animal["location"],
-            popup=f"Fun Fact: {animal['fun_fact']}\nWhy Endangered: {animal['details']}\nHow to Help: {animal['help']}",
-            icon=folium.Icon(icon="info-sign")
+            popup=f"<b>Fun Fact:</b> {animal['fun_fact']}<br><b>Why Endangered:</b> {animal['details']}",
+            icon=folium.Icon(icon="info-sign", color="green")
         ).add_to(animal_map)
 
-        # Save the map as HTML
+        # Save the map to HTML
         animal_map.save('static/map.html')
 
-        # Render the template and show the map
-        return render_template('map.html', details=animal['details'], fun_fact=animal['fun_fact'], help=animal['help'])
+        # Render the template
+        return render_template(
+            'map.html',
+            details=animal['details'],
+            fun_fact=animal['fun_fact'],
+            help=animal['help']
+        )
     else:
         return "Animal not found", 404
 

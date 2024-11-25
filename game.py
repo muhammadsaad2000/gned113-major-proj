@@ -4,14 +4,18 @@ import webbrowser
 # Initialize pygame
 pygame.init()
 
-# Screen dimensions (increased height for two rows)
-SCREEN_WIDTH = 1400
+# Screen dimensions
+SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Animal Welfare Educational Game")
 
 # Colors
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+# Fonts
+font = pygame.font.Font(None, 36)  # Default pygame font with size 36
 
 # Load animal images
 elephant_image = pygame.image.load('assets/elephant.png')
@@ -25,24 +29,18 @@ vaquita_image = pygame.image.load('assets/vaquita.png')
 red_panda_image = pygame.image.load('assets/red_panda.png')
 blue_whale_image = pygame.image.load('assets/blue_whale.png')
 
-# Horizontal and vertical spacing
-spacing_x = 50
-spacing_y = 50
-image_width = 300
-
-# Set up animal data in a 4x3 grid with the last row centered
+# Set up animal data in a grid
 animals = [
-    {"name": "Elephant", "image": elephant_image, "position": (0 * (image_width + spacing_x), spacing_y)},
-    {"name": "Tiger", "image": tiger_image, "position": (1 * (image_width + spacing_x), spacing_y)},
-    {"name": "Polar Bear", "image": polar_bear_image, "position": (2 * (image_width + spacing_x), spacing_y)},
-    {"name": "Orangutan", "image": orangutan_image, "position": (3 * (image_width + spacing_x), spacing_y)},
-    {"name": "Sea Turtle", "image": sea_turtle_image, "position": (0 * (image_width + spacing_x), spacing_y + 300)},
-    {"name": "Amur Leopard", "image": amur_leopard_image, "position": (1 * (image_width + spacing_x), spacing_y + 300)},
-    {"name": "Pangolin", "image": pangolin_image, "position": (2 * (image_width + spacing_x), spacing_y + 300)},
-    {"name": "Vaquita", "image": vaquita_image, "position": (3 * (image_width + spacing_x), spacing_y + 300)},
-    # Last row, centered on the screen
-    {"name": "Red Panda", "image": red_panda_image, "position": (SCREEN_WIDTH // 2 - (image_width + spacing_x) // 2 - image_width, spacing_y + 600)},
-    {"name": "Blue Whale", "image": blue_whale_image, "position": (SCREEN_WIDTH // 2 + (image_width + spacing_x) // 2 - image_width, spacing_y + 600)}
+    {"name": "Elephant", "image": elephant_image, "position": (50, 50)},
+    {"name": "Tiger", "image": tiger_image, "position": (400, 50)},
+    {"name": "Polar Bear", "image": polar_bear_image, "position": (750, 50)},
+    {"name": "Orangutan", "image": orangutan_image, "position": (1100, 50)},
+    {"name": "Sea Turtle", "image": sea_turtle_image, "position": (50, 350)},
+    {"name": "Amur Leopard", "image": amur_leopard_image, "position": (400, 350)},
+    {"name": "Pangolin", "image": pangolin_image, "position": (750, 350)},
+    {"name": "Vaquita", "image": vaquita_image, "position": (1100, 350)},
+    {"name": "Red Panda", "image": red_panda_image, "position": (550, 650)},
+    {"name": "Blue Whale", "image": blue_whale_image, "position": (900, 650)}
 ]
 
 # Main game loop
@@ -61,10 +59,17 @@ while running:
                 if rect.collidepoint(mouse_pos):
                     # Open the map with animal details
                     webbrowser.open("http://localhost:5000/" + animal["name"].replace(" ", "_").lower())
-    
-    # Draw animals on the screen
+
+    # Draw animals and their names on the screen
     for animal in animals:
+        # Draw the animal image
         screen.blit(animal["image"], animal["position"])
+        
+        # Draw the name below the image
+        text = font.render(animal["name"], True, BLACK)
+        text_rect = text.get_rect(center=(animal["position"][0] + animal["image"].get_width() // 2, 
+                                          animal["position"][1] + animal["image"].get_height() + 20))
+        screen.blit(text, text_rect)
 
     pygame.display.flip()
 
